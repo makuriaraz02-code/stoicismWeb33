@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stoic Game — Stoic Journey</title>
+  <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo">STOIC JOURNEY</div>
+    <nav aria-label="Main navigation">
+      <ul class="nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="game.html" class="active">Stoic Game</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="game-main" id="game-main">
+    <section class="game-card" id="game-card" aria-live="polite">
+      <h2 id="prompt">Loading...</h2>
+      <div class="images">
+        <button class="img-btn" id="choiceA" aria-label="Choice A">
+          <img src="assets/smile.jpeg" alt="Positive option" />
+        </button>
+        <button class="img-btn" id="choiceB" aria-label="Choice B">
+          <img src="assets/dislike.jpeg" alt="Negative option" />
+        </button>
+      </div>
+
+      <div class="controls">
+        <div id="feedback" class="feedback" aria-live="assertive"></div>
+        <div class="score">Score: <span id="score">0</span></div>
+        <button id="nextBtn" class="button" hidden>Next</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="Stoic.js" defer></script>
+</body>
+</html>
