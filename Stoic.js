@@ -1,85 +1,175 @@
 // Stoic.js
-// Minimal, dependency-free game logic for the Stoic Game page.
-// Should be referenced with <script src="Stoic.js" defer></script>
 
-document.addEventListener('DOMContentLoaded', () => {
-  const prompts = [
-    { text: "You missed your bus — what do you focus on?", correct: "B" },
-    { text: "A colleague takes credit for your work — what's your priority?", correct: "A" },
-    { text: "You have one hour free — how will you spend it?", correct: "A" },
-    { text: "You hear bad news about a friend — what matters most?", correct: "B" }
-  ];
+let score = 0;
+let bestScore = localStorage.getItem("bestScore") 
+    ? parseInt(localStorage.getItem("bestScore")) 
+    : 0;
 
-  // Simple pairing of prompts with "virtuous" answer A or B (for demo)
-  // In a real project, expand prompts with better scenarios and exact scoring.
+let currentScenarioIndex = 0;
 
-  const promptEl = document.getElementById('prompt');
-  const choiceA = document.getElementById('choiceA');
-  const choiceB = document.getElementById('choiceB');
-  const feedback = document.getElementById('feedback');
-  const scoreEl = document.getElementById('score');
-  const nextBtn = document.getElementById('nextBtn');
-
-  let score = 0;
-  let currentIndex = -1;
-  let locked = false;
-
-  function shuffleArray(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+const scenarios = [
+    {
+        text: "You wake up, ready for a productive day, but a notification shows your bus is delayed by 30 minutes, guaranteeing you'll be late for class.",
+        choices: [
+            { text: "Rage at the uncontrollable delay and complain loudly.", isStoic: false },
+            { text: "Accept the event, use the extra time to review your notes, and calmly plan your entry.", isStoic: true }
+        ],
+        explanation: "The bus schedule is outside your control. Your reaction is within your control. Focus on preparing (virtue) rather than pointless anger."
+    },
+    {
+        text: "A classmate publicly criticizes your philosophy project idea, calling it 'silly' and 'too simple.'",
+        choices: [
+            { text: "Immediately argue back, defending your idea and attacking theirs.", isStoic: false },
+            { text: "Remember their opinion is not under your control, and ask for specific constructive feedback.", isStoic: true }
+        ],
+        explanation: "Other people's judgments are external. Seek constructive use of feedback, ignore the insult."
+    },
+    {
+        text: "Someone cuts in front of you in a long cafeteria line.",
+        choices: [
+            { text: "Politely inform them of the line, but remain calm if they refuse.", isStoic: true },
+            { text: "Confront them angrily and escalate the situation.", isStoic: false }
+        ],
+        explanation: "You control your tone and response, not their behavior. Virtue is shown through calm assertiveness."
+    },
+    {
+        text: "During a group project, one member is doing almost nothing, causing the workload to fall on you.",
+        choices: [
+            { text: "Complain to everyone and resent the entire project.", isStoic: false },
+            { text: "Address the issue with the group and focus on what you can do to help move the project forward.", isStoic: true }
+        ],
+        explanation: "You cannot control others' effort, only your approach. Stoicism encourages rational discussion over resentment."
+    },
+    {
+        text: "You lose your favorite pair of headphones on the way to school.",
+        choices: [
+            { text: "Accept the loss and focus on the present moment, knowing possessions come and go.", isStoic: true },
+            { text: "Spend the rest of the day angry and blaming the universe.", isStoic: false }
+        ],
+        explanation: "Stoics treat material items as indifferent—they can be used wisely but shouldn’t control our emotions."
+    },
+    {
+        text: "You're assigned a task you dislike at work.",
+        choices: [
+            { text: "Perform the task to the best of your ability, practicing discipline and excellence.", isStoic: true },
+            { text: "Complain to others and do the work poorly out of spite.", isStoic: false }
+        ],
+        explanation: "Stoics act virtuously regardless of the task. Your character shows in how you approach what you don’t enjoy."
     }
-  }
+];
 
-  // Prepare game order
-  const order = prompts.map((_, i) => i);
-  shuffleArray(order);
 
-  function nextPrompt() {
-    locked = false;
-    feedback.textContent = '';
-    nextBtn.hidden = true;
-    currentIndex++;
-    if (currentIndex >= order.length) {
-      promptEl.textContent = "Game complete — well done!";
-      feedback.textContent = "Final score: " + score;
-      choiceA.disabled = choiceB.disabled = true;
-      return;
-    }
-    const p = prompts[order[currentIndex]];
-    promptEl.textContent = p.text;
-    // swap images occasionally for variety (but keep semantics simple)
-    // (This demo always keeps the images the same; replace if you want dynamic images.)
-  }
 
-  function giveFeedback(isCorrect) {
-    locked = true;
-    if (isCorrect) {
-      score++;
-      feedback.textContent = "Good choice — that reflects Stoic focus.";
+// ELEMENTS
+const scenarioTextElement = document.getElementById('scenario-text');
+const choiceButtonsElement = document.getElementById('choice-buttons');
+const scoreElement = document.getElementById('tranquility-score');
+const bestScoreElement = document.getElementById('best-score');
+const feedbackElement = document.getElementById('feedback');
+const startButton = document.getElementById('start-button');
+const resultImageElement = document.getElementById('result-image');
+
+
+// UPDATE SCORE + SHOW FEEDBACK + IMAGE + DELAY
+function updateScore(isStoic) {
+    const scenario = scenarios[currentScenarioIndex];
+
+    // Clear previous image
+    resultImageElement.innerHTML = "";
+
+    // Create image element
+    const img = document.createElement("img");
+    img.style.width = "180px";
+    img.style.marginTop = "15px";
+
+    if (isStoic) {
+        score += 10;
+        showFeedback("STOIC CHOICE! +10 Tranquility. " + scenario.explanation, true);
+        img.src = "assets/smile.jpeg";  
     } else {
-      feedback.textContent = "Try reflecting: ask which part you can control.";
+        score -= 5;
+        showFeedback("UN-STOIC CHOICE! -5 Tranquility. " + scenario.explanation, false);
+        img.src = "assets/dislike.jpeg"; 
     }
-    scoreEl.textContent = score;
-    nextBtn.hidden = false;
-  }
 
-  choiceA.addEventListener('click', () => {
-    if (locked) return;
-    const correct = prompts[order[currentIndex]].correct === "A";
-    giveFeedback(correct);
-  });
+    // Display result image
+    resultImageElement.appendChild(img);
 
-  choiceB.addEventListener('click', () => {
-    if (locked) return;
-    const correct = prompts[order[currentIndex]].correct === "B";
-    giveFeedback(correct);
-  });
+    // Update score UI
+    scoreElement.innerText = `Tranquility Score: ${score}`;
+    bestScoreElement.innerText = `Best Score: ${bestScore}`;
 
-  nextBtn.addEventListener('click', () => {
-    nextPrompt();
-  });
+    // Move to next scenario
+    currentScenarioIndex++;
 
-  // Start
-  nextPrompt();
-});
+    // Delay next scenario by 3 seconds
+    setTimeout(() => {
+        if (currentScenarioIndex < scenarios.length) {
+            displayScenario();
+        } else {
+            endGame();
+        }
+    }, 5000);
+}
+
+
+// DISPLAY SCENARIO
+function displayScenario() {
+    const scenario = scenarios[currentScenarioIndex];
+    scenarioTextElement.innerHTML = `<p>${scenario.text}</p>`;
+    choiceButtonsElement.innerHTML = '';
+    feedbackElement.innerHTML = '';
+    resultImageElement.innerHTML = '';
+
+    scenario.choices.forEach(choice => {
+        const button = document.createElement('button');
+        button.innerText = choice.text;
+        button.onclick = () => updateScore(choice.isStoic);
+        choiceButtonsElement.appendChild(button);
+    });
+}
+
+
+// FEEDBACK COLOR
+function showFeedback(message, isStoic) {
+    feedbackElement.innerHTML = message;
+    feedbackElement.style.color = isStoic ? "#2d6a4f" : "#b00020";
+    feedbackElement.style.fontWeight = "700";
+    feedbackElement.style.marginTop = "15px";
+}
+
+
+// START GAME
+function startGame() {
+    score = 0;
+    currentScenarioIndex = 0;
+
+    startButton.style.display = 'none';
+
+    scoreElement.innerText = `Tranquility Score: ${score}`;
+    bestScoreElement.innerText = `Best Score: ${bestScore}`;
+
+    displayScenario();
+}
+
+
+// END GAME
+function endGame() {
+    if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem("bestScore", bestScore);
+    }
+
+    scenarioTextElement.innerHTML = `
+        <h2>Your Stoic Journey Is Complete</h2>
+        <p>Final Tranquility Score: <strong>${score}</strong></p>
+        <p>Best Score Ever: <strong>${bestScore}</strong></p>
+    `;
+
+    choiceButtonsElement.innerHTML = '';
+    feedbackElement.innerHTML = '';
+    resultImageElement.innerHTML = '';
+
+    startButton.innerText = 'Play Again';
+    startButton.style.display = 'block';
+}
