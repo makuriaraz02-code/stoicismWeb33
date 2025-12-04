@@ -1,0 +1,97 @@
+/* Style.css - basic styling improved for readability and accessibility */
+:root{
+  --bg:#f7f7f8;
+  --accent:#2b2f77;
+  --muted:#666;
+  --card:#ffffff;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:var(--bg);
+  color:#222;
+  line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+
+.site-header{
+  background:var(--card);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 20px;
+  border-bottom:1px solid #e6e6e6;
+}
+
+.logo{font-weight:700; color:var(--accent)}
+.nav-list{list-style:none; display:flex; gap:12px; margin:0; padding:0}
+.nav-list a{color:var(--muted); text-decoration:none}
+.nav-list a.active{color:var(--accent); font-weight:600}
+
+.hero{
+  display:flex;
+  gap:20px;
+  max-width:1000px;
+  margin:28px auto;
+  padding:18px;
+  align-items:center;
+}
+
+.hero-img{width:160px; height:auto}
+.hero-text h1{margin:0 0 8px 0}
+.button{
+  display:inline-block;
+  background:var(--accent);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:6px;
+  text-decoration:none;
+  border:none;
+  cursor:pointer;
+}
+
+.principles{max-width:900px; margin:0 auto 40px; padding:0 18px}
+.principles ul{line-height:1.8}
+
+.site-footer{
+  text-align:center;
+  padding:20px;
+  color:var(--muted);
+  border-top:1px solid #eee;
+}
+
+.game-main{
+  max-width:900px;
+  margin:28px auto;
+  padding:18px;
+}
+
+.game-card{
+  background:var(--card);
+  border-radius:8px;
+  padding:18px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.images{
+  display:flex;
+  gap:12px;
+  margin:14px 0;
+  justify-content:center;
+}
+
+.img-btn{
+  border:2px solid transparent;
+  padding:6px;
+  border-radius:8px;
+  background:transparent;
+  cursor:pointer;
+}
+
+.img-btn img{display:block; width:150px; height:120px; object-fit:cover; border-radius:6px}
+
+.controls{display:flex; gap:12px; align-items:center; justify-content:center; margin-top:12px}
+.feedback{min-height:1.4em; color:var(--muted)}
+.score{font-weight:600}
