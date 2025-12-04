@@ -1,97 +1,130 @@
-/* Style.css - basic styling improved for readability and accessibility */
-:root{
-  --bg:#f7f7f8;
-  --accent:#2b2f77;
-  --muted:#666;
-  --card:#ffffff;
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Inter:wght@300;400;600&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+    background-color: #f4f1e9; /* Stoic parchment beige */
+    color: #333;
 }
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background:var(--bg);
-  color:#222;
-  line-height:1.45;
-  -webkit-font-smoothing:antialiased;
+/* NAVBAR */
+.navbar {
+    background-color: #5f6f52; /* muted sage green */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 30px;
+    align-items: center;
 }
 
-.site-header{
-  background:var(--card);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px 20px;
-  border-bottom:1px solid #e6e6e6;
+.navbar .logo {
+    font-family: "Merriweather", serif;
+    font-size: 20px;
+    letter-spacing: 2px;
 }
 
-.logo{font-weight:700; color:var(--accent)}
-.nav-list{list-style:none; display:flex; gap:12px; margin:0; padding:0}
-.nav-list a{color:var(--muted); text-decoration:none}
-.nav-list a.active{color:var(--accent); font-weight:600}
-
-.hero{
-  display:flex;
-  gap:20px;
-  max-width:1000px;
-  margin:28px auto;
-  padding:18px;
-  align-items:center;
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
 }
 
-.hero-img{width:160px; height:auto}
-.hero-text h1{margin:0 0 8px 0}
-.button{
-  display:inline-block;
-  background:var(--accent);
-  color:#fff;
-  padding:10px 14px;
-  border-radius:6px;
-  text-decoration:none;
-  border:none;
-  cursor:pointer;
+.navbar a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
 }
 
-.principles{max-width:900px; margin:0 auto 40px; padding:0 18px}
-.principles ul{line-height:1.8}
-
-.site-footer{
-  text-align:center;
-  padding:20px;
-  color:var(--muted);
-  border-top:1px solid #eee;
+.navbar a.active {
+    text-decoration: underline;
 }
 
-.game-main{
-  max-width:900px;
-  margin:28px auto;
-  padding:18px;
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background-color: #e7d9c3; /* warm stoic sandstone */
+    color: #3a3a3a;
 }
 
-.game-card{
-  background:var(--card);
-  border-radius:8px;
-  padding:18px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+.hero.small {
+    padding: 50px 20px;
 }
 
-.images{
-  display:flex;
-  gap:12px;
-  margin:14px 0;
-  justify-content:center;
+/* CONTENT */
+.content {
+    max-width: 900px;
+    margin: auto;
+    padding: 40px 20px;
+    line-height: 1.7;
 }
 
-.img-btn{
-  border:2px solid transparent;
-  padding:6px;
-  border-radius:8px;
-  background:transparent;
-  cursor:pointer;
+h1, h2 {
+    font-family: "Merriweather", serif;
 }
 
-.img-btn img{display:block; width:150px; height:120px; object-fit:cover; border-radius:6px}
+.button {
+    background-color: #5f6f52;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 6px;
+    display: inline-block;
+    text-decoration: none;
+    margin-top: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
 
-.controls{display:flex; gap:12px; align-items:center; justify-content:center; margin-top:12px}
-.feedback{min-height:1.4em; color:var(--muted)}
-.score{font-weight:600}
+.button:hover {
+    background-color: #49563f;
+}
+
+/* GAME AREA */
+.game-container {
+    text-align: center;
+}
+
+.choices button {
+    background-color: #c1b49a;
+    border: none;
+    padding: 15px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    width: 80%;
+    max-width: 500px;
+    font-weight: 600;
+}
+
+.choices button:hover {
+    background-color: #a89a80;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    background-color: #ded3c1;
+    font-size: 14px;
+}
+
+.stoic{
+    display: block;
+    margin:30px auto;
+    max-width: 100%;
+    height: auto;
+}
+
+#feedback {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #e8f3e8; /* light greenish background */
+    font-size: 1rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
